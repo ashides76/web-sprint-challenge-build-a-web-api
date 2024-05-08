@@ -13,8 +13,13 @@ router.get('/', async (req, res, next) => {
     .catch(next)
 })
 
-router.get('/:id', validateActionId, async (req, res) => {
-
+router.get('/:id', validateActionId, async (req, res, next) => {
+  const { id } = req.params
+  await Action.get(id)
+    .then(action => {
+      res.json(action)
+    }) 
+    .catch(next)
 })
 
 router.post('/', validateActionId, async(req, res) => {
