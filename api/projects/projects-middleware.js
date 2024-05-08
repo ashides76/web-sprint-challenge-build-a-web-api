@@ -8,25 +8,25 @@ function projectLogger(req, res, next) {
   next()
 }
 
-// async function validateProjectId (req, res, next) {
-//     const { id } = req.params
-//     await Users.getById(id)
-//       .then(user => {
-//         if (user) {
-//           req.user = user
-//           next()
-//         } else {
-//           next({
-//             status: 404,
-//             message: "user not found"
-//           })
-//         }
-//       })
-//       .catch(err => {
-//         next(err)
-//       })
+async function validateProjectId (req, res, next) {
+    const { id } = req.params
+    await Project.get(id)
+      .then(project => {
+        if (project) {
+          req.project = project
+          next()
+        } else {
+          next({
+            status: 404,
+            message: `No project with given id: ${id}.`
+          })
+        }
+      })
+      .catch(err => {
+        next(err)
+      })
   
-//   }
+  }
   
 //   async function validateUser(req, res, next) {
 //     const { name } = req.body
@@ -42,5 +42,6 @@ function projectLogger(req, res, next) {
   
 
 module.exports = {
-    projectLogger
+    projectLogger,
+    validateProjectId
 }

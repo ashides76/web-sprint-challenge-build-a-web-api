@@ -1,34 +1,40 @@
 const express = require('express')
+const {validateProjectId} = require('./projects-middleware')
 
 const Project = require('./projects-model')
 
 const router = express.Router()
 
 router.get('/', async (req, res, next) => {
-    await Project.get()
-        .then(project => {
-            res.status(200).json(project)
-        })
-        .catch(next)
+  await Project.get()
+      .then(project => {
+          res.status(200).json(project)
+      })
+      .catch(next)
 })
 
-router.get('/:id', async(req, res) => {
-
+router.get('/:id', validateProjectId, async(req, res, next) => {
+  const { id } = req.params
+  await Project.get(id)
+    .then(project => {
+      res.json(project)
+    })
+    .catch(next)
 })
 
 router.post('/', async (req, res) => {
 
 })
 
-router.put('/:id', async(req, res) => {
+router.put('/:id', validateProjectId, async(req, res) => {
 
 })
 
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', validateProjectId, async(req, res) => {
 
 })
 
-router.get('/:id/actions', async(req, res) => {
+router.get('/:id/actions', validateProjectId, async(req, res) => {
     
 })
 
