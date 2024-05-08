@@ -30,7 +30,7 @@ async function validateActionId (req, res, next) {
 async function validateAction (req, res, next) {
   // console.log(req.body)
   const { project_id, notes, description } = req.body
-  if ((!project_id || !notes || !description) || (!Number(project_id.toString().trim()) || !notes.trim() || !description.trim()) ) {
+  if ((!notes || !description) || (!notes.trim() || !description.trim())) {
     res.status(400).json({
       message: "missing required notes or description field"
     })
@@ -43,8 +43,20 @@ async function validateAction (req, res, next) {
   }
 }
 
+const checkCompletedProject = (req, res, next) => {
+  const { completed } = req.body;
+if(completed !== true && completed !== false) {
+      res.status(400).json({
+      message: 'please provide a completion status'
+      });
+  } else {
+      next();
+  }
+}
+
 module.exports = {
     actionLogger,
     validateActionId,
-    validateAction
+    validateAction, 
+    checkCompletedProject
 }

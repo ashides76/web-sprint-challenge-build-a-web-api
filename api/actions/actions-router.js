@@ -1,5 +1,5 @@
 const express = require('express')
-const {validateActionId, validateAction} = require('./actions-middlware')
+const {validateActionId, validateAction, checkCompletedProject} = require('./actions-middlware')
 
 const Action = require('./actions-model')
 
@@ -31,8 +31,13 @@ router.post('/', validateAction, async (req, res, next) => {
     .catch(next)
 })
 
-router.put('/:id', validateActionId, async (req, res) => {
-
+router.put('/:id', validateActionId, validateAction, checkCompletedProject, async (req, res, next) => {
+const { id } = req.params
+await Action.update(id, {...req.body, project_id: req.project_id, notes: req.notes, description: req.description })
+  .then(newAction => {
+    res.json(newAction)
+  })
+  .catch(next)
 })
 
 router.delete('./id', validateActionId, async (req, res) => {
