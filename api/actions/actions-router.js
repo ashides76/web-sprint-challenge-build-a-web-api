@@ -17,13 +17,18 @@ router.get('/:id', validateActionId, async (req, res, next) => {
   const { id } = req.params
   await Action.get(id)
     .then(action => {
+      console.log(action)
       res.json(action)
     }) 
     .catch(next)
 })
 
-router.post('/', validateActionId, async(req, res) => {
-
+router.post('/', validateAction, async (req, res, next) => {
+  await Action.insert({...req.body, notes: req.notes, description: req.description })
+    .then(newAction => {
+      res.json(newAction)
+    })
+    .catch(next)
 })
 
 router.put('/:id', validateActionId, async (req, res) => {

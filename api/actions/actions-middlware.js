@@ -30,12 +30,12 @@ async function validateActionId (req, res, next) {
 async function validateAction (req, res, next) {
   // console.log(req.body)
   const { project_id, notes, description } = req.body
-  if ((!project_id || !notes || !description) || (!project_id.trim() || !notes.trim() || !description.trim()) ) {
+  if ((!project_id || !notes || !description) || (!Number(project_id.toString().trim()) || !notes.trim() || !description.trim()) ) {
     res.status(400).json({
       message: "missing required notes or description field"
     })
   } else {
-    req.project_id = project_id.trim()
+    req.project_id = project_id
     req.notes = notes.trim()
     req.description = description.trim()
     console.log({"project_id": req.project_id, "notes": req.notes, "description": req.description})
