@@ -43,9 +43,20 @@ async function validateProjectId (req, res, next) {
     }
   }
   
-
+const checkCompletedProject = (req, res, next) => {
+    const { completed } = req.body;
+  if(completed !== true && completed !== false) {
+        res.status(400).json({
+        message: 'please provide a completion status'
+        });
+    } else {
+        next();
+    }
+}
+  
 module.exports = {
     projectLogger,
     validateProjectId,
-    validateProject
+    validateProject,
+    checkCompletedProject
 }
