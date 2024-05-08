@@ -28,20 +28,23 @@ async function validateProjectId (req, res, next) {
   
   }
   
-//   async function validateUser(req, res, next) {
-//     const { name } = req.body
-//     if (!name || !name.trim()) {
-//       res.status(400).json({
-//         message: "missing required name field"
-//       })
-//     } else {
-//       req.name = name.trim()
-//       next()
-//     }
-//   }
+  async function validateProject(req, res, next) {
+    const { name, description } = req.body
+    console.log(req.body)
+    if ((!name || !description) || (!name.trim() || !description.trim()) ) {
+      res.status(400).json({
+        message: "missing required name or description field"
+      })
+    } else {
+      req.name = name.trim()
+      req.description = description.trim()
+      next()
+    }
+  }
   
 
 module.exports = {
     projectLogger,
-    validateProjectId
+    validateProjectId,
+    validateProject
 }
