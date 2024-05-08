@@ -39,8 +39,14 @@ router.put('/:id', validateProjectId, validateProject, async(req, res, next) => 
     .catch(next)
 })
 
-router.delete('/:id', validateProjectId, async(req, res) => {
-
+router.delete('/:id', validateProjectId, async(req, res, next) => {
+  const { id } = req.params
+  const removedProj = await Project.get(id)
+  await Project.remove(id)
+    .then(() => {
+      res.json(removedProj)
+    })
+    .catch(next)
 })
 
 router.get('/:id/actions', validateProjectId, async(req, res) => {
